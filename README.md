@@ -2,6 +2,8 @@
 
 Duck Facts is a Raycast extension that displays interesting facts about ducks.
 
+![Duck Facts Logo](assets/logo.png)
+
 ## Description
 
 This extension generates and displays random facts about ducks using AI.
