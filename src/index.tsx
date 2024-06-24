@@ -13,8 +13,8 @@ export default function Command() {
   `;
 
   const model_settings = {
-    model: AI.Model.Llama3_70B,
     creativity: "low" as const,
+    model: AI.Model["OpenAI_GPT3.5-turbo"],
   };
 
   const fetchData = async () => {
