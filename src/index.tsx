@@ -1,10 +1,18 @@
-import { Detail, Action, ActionPanel, AI, showToast, Toast } from "@raycast/api";
-import { useEffect, useState, useRef } from "react";
+import { Detail, Action, ActionPanel, AI, showToast, Toast, environment, popToRoot } from "@raycast/api";
+import { useEffect, useState } from "react";
 
 export default function Command() {
   const [answer, setAnswer] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
-  const hasRunEffect = useRef(false);
+
+  if (!environment.canAccess(AI)) {
+    popToRoot();
+    showToast({
+      style: Toast.Style.Failure,
+      title: "This command requires a PRO subscription.",
+    });
+    return;
+  }
 
   const prompt = `
   Generate a fact about ducks. Use internet wherever possible.
@@ -35,18 +43,16 @@ export default function Command() {
   };
 
   useEffect(() => {
-    if (!hasRunEffect.current) {
-      fetchData();
-      hasRunEffect.current = true;
-    }
+    fetchData();
   }, []);
 
   return (
     <Detail
-      markdown={isLoading ? "Generating..." : answer || "No suggestions generated"}
+      isLoading={isLoading}
+      markdown={isLoading ? "Generating..." : answer || "No duck fact found"}
       actions={
         <ActionPanel>
-          <Action title="Regenerate Suggestions" onAction={fetchData} />
+          <Action title="New Fact" icon="duck.svg" onAction={fetchData} />
         </ActionPanel>
       }
     />
